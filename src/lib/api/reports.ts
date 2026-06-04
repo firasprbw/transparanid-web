@@ -23,30 +23,57 @@ export async function getReportBySlug(
   return response.data
 }
 
+// export async function createReport(
+//   formData: FormData,
+//   token: string
+// ) {
+//   const response =
+//     await fetch(
+//       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports`,
+//       {
+//         method: "POST",
+
+//         headers: {
+//           Authorization: `Bearer ${token}`
+//         },
+
+//         body: formData
+//       }
+//     )
+
+//   if (!response.ok) {
+//     throw new Error(
+//       "Failed to create report"
+//     )
+//   }
+
+//   return response.json()
+// }
+
 export async function createReport(
-  formData: FormData,
-  token: string
-) {
+formData: FormData, token: string) {
   const response =
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports`,
+      `${process.env.NEXT_PUBLIC_API_URL}/reports`,
       {
         method: "POST",
 
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
+        credentials: "include",
 
         body: formData
       }
     )
 
+  const result =
+    await response.json()
+
   if (!response.ok) {
     throw new Error(
+      result.message ||
       "Failed to create report"
     )
   }
 
-  return response.json()
+  return result
 }
 

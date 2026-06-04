@@ -1,76 +1,347 @@
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import {
+  registerSchema,
+  RegisterFormData
+} from "@/schemas/register.schema"
+
+import { register } from "@/lib/api/auth"
+
 import { Button } from "@/components/ui/button"
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card"
+
 import {
   Field,
   FieldDescription,
   FieldGroup,
-  FieldLabel,
+  FieldLabel
 } from "@/components/ui/field"
+
 import { Input } from "@/components/ui/input"
 
-export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+export function RegisterForm(
+  props: React.ComponentProps<typeof Card>
+) {
+
+  const router = useRouter()
+
+  const [loading, setLoading] =
+    useState(false)
+
+  const [error, setError] =
+    useState("")
+
+  const {
+    register: registerField,
+    handleSubmit,
+    formState: {
+      errors
+    }
+  } = useForm<RegisterFormData>({
+    resolver:
+      zodResolver(
+        registerSchema
+      ),
+
+    defaultValues: {
+      username: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      confirmPassword: ""
+    }
+  })
+
+  async function onSubmit(
+    values: RegisterFormData
+  ) {
+
+    try {
+
+      setLoading(true)
+      setError("")
+
+      await register({
+        username:
+          values.username,
+
+        email:
+          values.email,
+
+        phoneNumber:
+          values.phoneNumber,
+
+        password:
+          values.password
+      })
+
+      router.push("/login")
+
+    } catch (error) {
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Register failed"
+      )
+
+    } finally {
+
+      setLoading(false)
+
+    }
+  }
+
   return (
+
     <Card {...props}>
+
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+
+        <CardTitle>
+          Create an account
+        </CardTitle>
+
         <CardDescription>
-          Enter your information below to create your account
+          Enter your information below
+          to create your account
         </CardDescription>
+
       </CardHeader>
+
       <CardContent>
-        <form>
+
+        <form
+          onSubmit={
+            handleSubmit(
+              onSubmit
+            )
+          }
+        >
+
           <FieldGroup>
+
             <Field>
-              <FieldLabel htmlFor="name">Full Name</FieldLabel>
-              <Input id="name" type="text" placeholder="John Doe" required />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+
+              <FieldLabel>
+                Username
+              </FieldLabel>
+
               <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
+                placeholder="firas"
+                {...registerField(
+                  "username"
+                )}
               />
-              <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
-              </FieldDescription>
+
+              {errors.username && (
+
+                <p className="text-sm text-destructive">
+
+                  {
+                    errors
+                      .username
+                      .message
+                  }
+
+                </p>
+
+              )}
+
             </Field>
+
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" required />
+
+              <FieldLabel>
+                Email
+              </FieldLabel>
+
+              <Input
+                type="email"
+                placeholder="firas@gmail.com"
+                {...registerField(
+                  "email"
+                )}
+              />
+
               <FieldDescription>
-                Must be at least 8 characters long.
+
+                We will never share
+                your email.
+
               </FieldDescription>
+
+              {errors.email && (
+
+                <p className="text-sm text-destructive">
+
+                  {
+                    errors
+                      .email
+                      .message
+                  }
+
+                </p>
+
+              )}
+
             </Field>
+
             <Field>
-              <FieldLabel htmlFor="confirm-password">
+
+              <FieldLabel>
+                Phone Number
+              </FieldLabel>
+
+              <Input
+                placeholder="08123456789"
+                {...registerField(
+                  "phoneNumber"
+                )}
+              />
+
+              {errors.phoneNumber && (
+
+                <p className="text-sm text-destructive">
+
+                  {
+                    errors
+                      .phoneNumber
+                      .message
+                  }
+
+                </p>
+
+              )}
+
+            </Field>
+
+            <Field>
+
+              <FieldLabel>
+                Password
+              </FieldLabel>
+
+              <Input
+                type="password"
+                {...registerField(
+                  "password"
+                )}
+              />
+
+              <FieldDescription>
+
+                Must be at least
+                8 characters long.
+
+              </FieldDescription>
+
+              {errors.password && (
+
+                <p className="text-sm text-destructive">
+
+                  {
+                    errors
+                      .password
+                      .message
+                  }
+
+                </p>
+
+              )}
+
+            </Field>
+
+            <Field>
+
+              <FieldLabel>
                 Confirm Password
               </FieldLabel>
-              <Input id="confirm-password" type="password" required />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+
+              <Input
+                type="password"
+                {...registerField(
+                  "confirmPassword"
+                )}
+              />
+
+              {errors.confirmPassword && (
+
+                <p className="text-sm text-destructive">
+
+                  {
+                    errors
+                      .confirmPassword
+                      .message
+                  }
+
+                </p>
+
+              )}
+
             </Field>
-            <FieldGroup>
-              <Field>
-                <Button type="submit">Create Account</Button>
-                <Button variant="outline" type="button">
-                  Sign up with Google
-                </Button>
-                <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
+
+            {error && (
+
+              <p className="text-sm text-destructive">
+
+                {error}
+
+              </p>
+
+            )}
+
+            <Field>
+
+              <Button
+                type="submit"
+                disabled={loading}
+              >
+
+                {
+                  loading
+                    ? "Creating account..."
+                    : "Create Account"
+                }
+
+              </Button>
+
+              <FieldDescription className="text-center">
+
+                Already have an account?{" "}
+
+                <Link
+                  href="/login"
+                  className="underline"
+                >
+                  Sign in
+                </Link>
+
+              </FieldDescription>
+
+            </Field>
+
           </FieldGroup>
+
         </form>
+
       </CardContent>
+
     </Card>
+
   )
 }

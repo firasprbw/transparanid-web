@@ -39,6 +39,7 @@ import { ReportCategory }
 from "@/types/report-category"
 import { EvidenceUploadFile } from "@/types/evidence-upload"
 import { createReport } from "@/lib/api/reports"
+import { useRouter } from "next/navigation"
 
 interface Props {
   categories: ReportCategory[]
@@ -115,6 +116,9 @@ export function CreateReportForm({
 
   const formData =
     new FormData()
+
+    const router =
+    useRouter()
 
   formData.append(
     "title",

@@ -1,32 +1,3 @@
-import { apiFetch } from "./client"
-
-export const authApi = {
-  login: (body: {
-    email: string
-    password: string
-  }) =>
-    apiFetch(
-      "/api/v1/auth/login",
-      {
-        method: "POST",
-        body: JSON.stringify(body)
-      }
-    ),
-
-  register: (body: {
-    username: string
-    email: string
-    password: string
-  }) =>
-    apiFetch(
-      "/api/v1/auth/register",
-      {
-        method: "POST",
-        body: JSON.stringify(body)
-      }
-    )
-}
-
 export async function login(
   email: string,
   password: string
@@ -34,7 +5,7 @@ export async function login(
 
   const response =
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       {
         method: "POST",
 
@@ -52,32 +23,42 @@ export async function login(
       }
     )
 
-  return response.json()
+  const data =
+    await response.json()
+
+  if (!response.ok) {
+    throw new Error(
+      data.message
+    )
+  }
+
+  return data
 }
 
-export async function getMe() {
+export async function register(data: {
+  username: string
+  email: string
+  password: string
+  phoneNumber: string
+}) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+  )
 
-  const response =
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/me`,
-      {
-        credentials: "include"
-      }
+  const result = await response.json()
+
+  if (!response.ok) {
+    throw new Error(
+      result.message || "Register failed"
     )
+  }
 
-  return response.json()
-}
-
-export async function logout() {
-
-  const response =
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`,
-      {
-        method: "POST",
-        credentials: "include"
-      }
-    )
-
-  return response.json()
+  return result
 }
