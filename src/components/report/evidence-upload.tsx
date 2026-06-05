@@ -79,8 +79,8 @@ export function EvidenceUpload({
       <input
         ref={inputRef}
         type="file"
+        accept=".png,.jpg,.jpeg,.webp"
         multiple
-        accept="image/*"
         className="hidden"
         onChange={handleSelect}
       />

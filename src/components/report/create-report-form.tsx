@@ -40,6 +40,7 @@ from "@/types/report-category"
 import { EvidenceUploadFile } from "@/types/evidence-upload"
 import { createReport } from "@/lib/api/reports"
 import { useRouter } from "next/navigation"
+import router from "next/router"
 
 interface Props {
   categories: ReportCategory[]
@@ -47,27 +48,27 @@ interface Props {
 
 const ENTITY_TYPES = [
   {
-    value: "GOVERNMENT",
-    label: "Pemerintah"
+    value: "PERSON",
+    label: "Perorangan"
   },
   {
-    value: "COMPANY",
+    value: "BUSINESS",
     label: "Perusahaan"
+  },
+  {
+    value: "GOVERNMENT",
+    label: "Pemerintah"
   },
   {
     value: "ORGANIZATION",
     label: "Organisasi"
   },
   {
-    value: "INDIVIDUAL",
-    label: "Individu"
-  },
-  {
-    value: "EDUCATION",
+    value: "SCHOOL",
     label: "Pendidikan"
   },
   {
-    value: "OTHER",
+    value: "FOUNDATION",
     label: "Lainnya"
   },
 ]
@@ -101,86 +102,113 @@ export function CreateReportForm({
   values: CreateReportFormData
 ) {
 
-  if (evidences.length === 0) {
+  if (
+    evidences.length === 0
+  ) {
+
+    alert(
+      "Minimal 1 bukti harus diupload"
+    )
+
     return
   }
 
-  const token =
-    localStorage.getItem("token")
+  try {
 
-  if (!token) {
-    throw new Error(
-      "Unauthorized"
+    const formData =
+      new FormData()
+
+    formData.append(
+      "title",
+      values.title
     )
-  }
 
-  const formData =
-    new FormData()
+    formData.append(
+      "categoryId",
+      values.categoryId
+    )
 
-    const router =
-    useRouter()
+    formData.append(
+      "entityName",
+      values.entityName
+    )
 
-  formData.append(
-    "title",
-    values.title
-  )
+    formData.append(
+      "entityType",
+      values.entityType
+    )
 
-  formData.append(
-    "categoryId",
-    values.categoryId
-  )
+    formData.append(
+      "description",
+      values.description
+    )
 
-  formData.append(
-    "entityName",
-    values.entityName
-  )
+    formData.append(
+      "incidentDate",
+      values.incidentDate
+    )
 
-  formData.append(
-    "entityType",
-    values.entityType
-  )
+    formData.append(
+      "location",
+      values.location
+    )
 
-  formData.append(
-    "description",
-    values.description
-  )
-
-  formData.append(
-    "incidentDate",
-    values.incidentDate
-  )
-
-  formData.append(
-    "location",
-    values.location
-  )
-
-  formData.append(
-    "estimatedAmount",
-    String(values.estimatedAmount)
-  )
-
-  evidences.forEach(
-    evidence => {
-
-      formData.append(
-        "evidences",
-        evidence.file
+    formData.append(
+      "estimatedAmount",
+      String(
+        values.estimatedAmount
       )
-
-    }
-  )
-
-  const result =
-    await createReport(
-      formData,
-      token
     )
 
-  console.log(result)
+    evidences.forEach(
+      evidence => {
+
+        formData.append(
+          "evidences",
+          evidence.file
+        )
+
+      }
+    )
+
+    for (
+  const pair
+  of formData.entries()
+) {
+
+  console.log(
+    pair[0],
+    pair[1]
+  )
+
 }
 
+    const result =
+      await createReport(
+        formData,
+        ""
+      )
+
+    console.log(result)
+
+    router.push(
+      "/reports/success"
+    )
+
+  } catch (error) {
+
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Failed to create report"
+    )
+
+  }
+}
+
+
   const [evidences, setEvidences] = useState<EvidenceUploadFile[]>([])
+  const router = useRouter()
 
   return (
 
@@ -516,11 +544,14 @@ export function CreateReportForm({
 </Card>
 
       <Button
+        onSubmit={form.handleSubmit(
+          onSubmit
+        )}
         type="submit"
         size="lg"
         className="w-full"
       >
-        Lanjut ke Upload Bukti
+        Upload Laporan
       </Button>
 
     </form>

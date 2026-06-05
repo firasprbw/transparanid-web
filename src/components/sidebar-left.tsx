@@ -13,8 +13,10 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { TerminalIcon, AudioLinesIcon, SearchIcon, SparklesIcon, HomeIcon, InboxIcon, CalendarIcon, Settings2Icon, BlocksIcon, Trash2Icon, MessageCircleQuestionIcon } from "lucide-react"
+import { TerminalIcon, AudioLinesIcon, SearchIcon, SparklesIcon, HomeIcon, InboxIcon, CalendarIcon, Settings2Icon, BlocksIcon, Trash2Icon, MessageCircleQuestionIcon, BookmarkIcon, Pen } from "lucide-react"
 import { NavUser } from "./nav-user"
+import { Separator } from "./ui/separator"
+import { useAuth } from "@/contexts/auth-context"
 
 // This is sample data.
 const data = {
@@ -30,34 +32,34 @@ const data = {
   ],
   navMain: [
   {
-    title: "Home",
+    title: "Beranda",
     url: "/",
     icon: <HomeIcon className="h-4 w-4" />
   },
   {
     title: "Laporan",
     url: "/reports",
-    icon: <SearchIcon className="h-4 w-4" />
+    icon: <InboxIcon className="h-4 w-4" />
   },
   {
-    title: "Entitas",
-    url: "/entities",
-    icon: <BlocksIcon className="h-4 w-4" />
+    title: "Cari",
+    url: "/search",
+    icon: <SearchIcon className="h-4 w-4" />
   },
   {
     title: "Kategori",
     url: "/categories",
-    icon: <AudioLinesIcon className="h-4 w-4" />
+    icon: <BlocksIcon className="h-4 w-4" />
   },
   {
     title: "Buat Laporan",
-    url: "/create-report",
-    icon: <SparklesIcon className="h-4 w-4" />
+    url: "/reports/create",
+    icon: <Pen className="h-4 w-4" />
   },
   {
     title: "Tersimpan",
     url: "/saved",
-    icon: <Trash2Icon className="h-4 w-4" />
+    icon: <BookmarkIcon className="h-4 w-4" />
   }
 ],
   user: {
@@ -67,9 +69,16 @@ const data = {
   },
 }
 
+
+
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+const {
+  user,
+  loading
+} = useAuth()
+
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
@@ -77,9 +86,23 @@ export function SidebarLeft({
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
+        {
+  !loading &&
+  user && (
+
+    <NavUser
+      user={{
+        name: user.username,
+        email: user.email,
+        avatar: ""
+      }}
+    />
+
+  )
+}
       </SidebarContent>
       <SidebarRail />
-      <NavUser user={data.user} />
+      
     </Sidebar>
   )
 }

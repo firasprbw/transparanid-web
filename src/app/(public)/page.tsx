@@ -1,5 +1,6 @@
 import ReportFeed from "@/components/report/report-feed"
 import ReportError from "@/components/report/report-error"
+import {Card} from "@/components/ui/card"
 
 import {
   getReports
@@ -8,6 +9,8 @@ import {
 import {
   mapReportToFeedReport
 } from "@/lib/mappers/report.mapper"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default async function HomePage() {
 
@@ -22,15 +25,30 @@ export default async function HomePage() {
   return (
     <div className="space-y-6">
 
-      <div>
-        <h1 className="text-2xl font-bold">
-          Feed Laporan
-        </h1>
+      <div className="flex items-start justify-between gap-4">
 
-        <p className="text-muted-foreground">
-          Laporan masyarakat yang telah dipublikasikan
-        </p>
-      </div>
+  <div>
+
+    {/* <h1 className="text-2xl font-bold">
+      Feed Laporan
+    </h1> */}
+
+
+    <p className="text-muted-foreground">
+      Laporan masyarakat yang telah dipublikasikan
+    </p>
+
+  </div>
+
+  <Button>
+
+    <Link href={"/reports/create"}>
+      + Buat Laporan
+    </Link>
+
+  </Button>
+
+</div>
 
       <ReportFeed
         reports={feedReports}

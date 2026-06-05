@@ -4,6 +4,10 @@ import {
 } from "@/components/report/create-report-form"
 
 import {
+  ProtectedRoute
+} from "@/components/auth/protected-route"
+
+import {
   getCategories
 } from "@/lib/api/categories"
 
@@ -14,7 +18,8 @@ CreateReportPage() {
     await getCategories()
 
   return (
-    <TransparanLayout>
+     <ProtectedRoute>
+      <TransparanLayout>
       <div className="max-w-4xl mx-auto w-full">
 
       <div className="mb-6">
@@ -35,6 +40,8 @@ CreateReportPage() {
 
     </div>
     </TransparanLayout>
+     </ProtectedRoute>
+    
     
 
   )

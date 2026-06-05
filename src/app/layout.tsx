@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider"
 import { cn } from "@/lib/utils";
+import {
+  AuthProvider
+} from "@/providers/auth-provider"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -33,7 +36,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

@@ -1,8 +1,9 @@
 export type UserRole =
   | "USER"
-  | "ENTITY_ADMIN"
+  | "ADMIN"
   | "MODERATOR"
   | "SUPER_ADMIN"
+  | "ENTITY_ADMIN"
 
 export interface User {
   id: string
