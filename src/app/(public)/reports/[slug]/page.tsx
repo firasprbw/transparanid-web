@@ -2,8 +2,14 @@ import EvidenceGallery from "@/components/report/evidence-gallery"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import {
+  CommentSection
+} from "@/components/report/comment-section"
+import {
   getReportBySlug
 } from "@/lib/api/reports"
+import {
+  SaveButton
+} from "@/components/report/save-button"
 
 interface PageProps {
   params: Promise<{
@@ -145,11 +151,22 @@ console.log(
 
         </div>
 
+        {/* <div className="mt-6">
+            <SaveButton
+  reportId={report.id}
+/>
+        </div> */}
+
+      </div>
+
+      {/* Comment Section */}
+      <div className="mt-12">
+        <CommentSection reportId={report.id} />
       </div>
 
     </div>
+     
 
   </Card>
-
   )
 }

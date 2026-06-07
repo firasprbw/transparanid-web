@@ -79,7 +79,7 @@ export function EvidenceUpload({
       <input
         ref={inputRef}
         type="file"
-        accept=".png,.jpg,.jpeg,.webp"
+        accept=".png,.jpg,.jpeg,.webp, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .mp4, .avi, .mkv"
         multiple
         className="hidden"
         onChange={handleSelect}

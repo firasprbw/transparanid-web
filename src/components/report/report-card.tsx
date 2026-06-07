@@ -20,6 +20,12 @@ import { FeedReport } from "@/types/feed-report"
 
 import { formatCurrency } from "@/lib/format-currency"
 import { getImpactLevel } from "@/lib/get-impact-level"
+import {
+  TrustButton
+} from "@/components/report/trust-button"
+// import { useState } from "react"
+
+
 
 interface ReportCardProps {
   report: FeedReport
@@ -34,6 +40,9 @@ export default function ReportCard({
       report.estimated_amount
     )
 
+    // const [commentCount, setCommentCount] = useState(0)
+
+
   return (
     <Link
       href={`/reports/${report.slug}`}
@@ -44,7 +53,7 @@ export default function ReportCard({
 
           <div className="flex items-center gap-2 text-sm font-medium">
 
-            <Building2 className="size-4" />
+            <p>Terlapor :</p>
 
             <span>
               {report.entity.display_name}
@@ -122,19 +131,19 @@ export default function ReportCard({
 
             <div className="flex items-center gap-1">
 
-              <ThumbsUp className="size-4" />
-
-              {report.reaction_count}
+              <TrustButton
+                reportId={report.id}
+              />
 
             </div>
 
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
 
               <MessageCircle className="size-4" />
 
               {report.comment_count}
 
-            </div>
+            </div> */}
 
           </div>
 

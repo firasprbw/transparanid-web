@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/field"
 
 import { Input } from "@/components/ui/input"
+import { CommandIcon } from "lucide-react"
 
 export function RegisterForm(
   props: React.ComponentProps<typeof Card>
@@ -109,16 +110,21 @@ export function RegisterForm(
   return (
 
     <Card {...props}>
+      <div className="flex flex-col items-center gap-2">
+              <CommandIcon>
+              </CommandIcon>
+          <span className="text-2xl font-bold tracking-tight">TransparanID</span>
+        </div>
 
       <CardHeader>
 
         <CardTitle>
-          Create an account
+          Buat akun baru
         </CardTitle>
 
         <CardDescription>
-          Enter your information below
-          to create your account
+          Masukkan informasi Anda di bawah ini
+          untuk membuat akun Anda
         </CardDescription>
 
       </CardHeader>
@@ -180,8 +186,8 @@ export function RegisterForm(
 
               <FieldDescription>
 
-                We will never share
-                your email.
+                Kami tidak akan pernah membagikan
+                email Anda.
 
               </FieldDescription>
 
@@ -204,7 +210,7 @@ export function RegisterForm(
             <Field>
 
               <FieldLabel>
-                Phone Number
+                Nomor Telepon
               </FieldLabel>
 
               <Input
@@ -245,8 +251,8 @@ export function RegisterForm(
 
               <FieldDescription>
 
-                Must be at least
-                8 characters long.
+                Password harus terdiri dari minimal
+                8 karakter.
 
               </FieldDescription>
 
@@ -269,7 +275,7 @@ export function RegisterForm(
             <Field>
 
               <FieldLabel>
-                Confirm Password
+                Konfirmasi Password
               </FieldLabel>
 
               <Input
@@ -314,15 +320,15 @@ export function RegisterForm(
 
                 {
                   loading
-                    ? "Creating account..."
-                    : "Create Account"
+                    ? "Membuat akun..."
+                    : "Buat Akun"
                 }
 
               </Button>
 
               <FieldDescription className="text-center">
 
-                Already have an account?{" "}
+                Sudah punya akun?{" "}
 
                 <Link
                   href="/login"

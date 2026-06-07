@@ -20,12 +20,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon, } from "lucide-react"
 import {
   useAuth
 } from "@/contexts/auth-context"
 import { useRouter }
 from "next/navigation"
+import Link from "next/link"
 
 export function NavUser({
   user,
@@ -104,31 +105,21 @@ const handleLogout =
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
+            <Link href={"/profile"}>
               <DropdownMenuItem>
-                <SparklesIcon
-                />
-                Upgrade to Pro
+                
+                  <BadgeCheckIcon />
+                  Profile
+                
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            </Link>
+            <Link href={"/notifications"}>
               <DropdownMenuItem>
-                <BadgeCheckIcon
-                />
-                Account
+                  <BellIcon />
+                  Notifications
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon
-                />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon
-                />
-                Notifications
-              </DropdownMenuItem>
+            </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem

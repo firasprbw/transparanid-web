@@ -37,6 +37,11 @@ const data = {
     icon: <HomeIcon className="h-4 w-4" />
   },
   {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: <SparklesIcon className="h-4 w-4" />
+  },
+  {
     title: "Laporan",
     url: "/reports",
     icon: <InboxIcon className="h-4 w-4" />
@@ -46,27 +51,27 @@ const data = {
     url: "/search",
     icon: <SearchIcon className="h-4 w-4" />
   },
-  {
-    title: "Kategori",
-    url: "/categories",
-    icon: <BlocksIcon className="h-4 w-4" />
-  },
+  // {
+  //   title: "Kategori",
+  //   url: "/categories",
+  //   icon: <BlocksIcon className="h-4 w-4" />
+  // },
   {
     title: "Buat Laporan",
     url: "/reports/create",
     icon: <Pen className="h-4 w-4" />
   },
-  {
-    title: "Tersimpan",
-    url: "/saved",
-    icon: <BookmarkIcon className="h-4 w-4" />
-  }
+  // {
+  //   title: "Tersimpan",
+  //   url: "/saved-reports",
+  //   icon: <BookmarkIcon className="h-4 w-4" />
+  // }
 ],
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+  // user: {
+  //   name: "shadcn",
+  //   email: "m@example.com",
+  //   avatar: "/avatars/shadcn.jpg",
+  // },
 }
 
 

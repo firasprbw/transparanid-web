@@ -1,47 +1,195 @@
-// import { SidebarLeft } from "@/components/sidebar-left"
-// import { SidebarRight } from "@/components/sidebar-right"
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-// } from "@/components/ui/breadcrumb"
-// import { Separator } from "@/components/ui/separator"
-// import {
-//   SidebarInset,
-//   SidebarProvider,
-//   SidebarTrigger,
-// } from "@/components/ui/sidebar"
+import { TransparanLayout } from "@/components/layout/transparan-layout"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
 
-// export default function Page() {
-//   return (
-//     <SidebarProvider>
-//       <SidebarLeft />
-//       <SidebarInset>
-//         <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
-//           <div className="flex flex-1 items-center gap-2 px-3">
-//             <SidebarTrigger />
-//             <Separator
-//               orientation="vertical"
-//               className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-//             />
-//             <Breadcrumb>
-//               <BreadcrumbList>
-//                 <BreadcrumbItem>
-//                   <BreadcrumbPage className="line-clamp-1">
-//                     Project Management & Task Tracking
-//                   </BreadcrumbPage>
-//                 </BreadcrumbItem>
-//               </BreadcrumbList>
-//             </Breadcrumb>
-//           </div>
-//         </header>
-//         <div className="flex flex-1 flex-col gap-4 p-4">
-//           <div className="mx-auto h-24 w-full max-w-3xl rounded-xl bg-muted/50" />
-//           <div className="mx-auto h-screen w-full max-w-3xl rounded-xl bg-muted/50" />
-//         </div>
-//       </SidebarInset>
-//       <SidebarRight />
-//     </SidebarProvider>
-//   )
-// }
+import {
+  getMyReports
+} from "@/lib/api/dashboard"
+
+import Link from "next/link"
+
+export default async function DashboardPage() {
+
+  const reports =
+    await getMyReports()
+
+  const totalReports =
+    reports.length
+
+  const publishedReports =
+    reports.filter(
+      report =>
+        report.status ===
+        "PUBLISHED"
+    ).length
+
+  const pendingReports =
+    reports.filter(
+      report =>
+        report.status ===
+        "PENDING_REVIEW"
+    ).length
+
+  const rejectedReports =
+    reports.filter(
+      report =>
+        report.status ===
+        "REJECTED"
+    ).length
+
+  return (
+    <TransparanLayout>
+        <div className="space-y-6">
+
+      <div>
+
+        <h1 className="text-xl font-bold">
+          Dashboard
+        </h1>
+
+        <p className="text-muted-foreground">
+          Ringkasan aktivitas akun Anda
+        </p>
+
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-4">
+
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">
+              Total Reports
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              {totalReports}
+            </h2>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">
+              Published
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              {publishedReports}
+            </h2>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">
+              Pending
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              {pendingReports}
+            </h2>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">
+              Rejected
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              {rejectedReports}
+            </h2>
+          </CardContent>
+        </Card>
+
+      </div>
+
+      <Card>
+
+        <CardHeader>
+
+          <CardTitle>
+            Recent Reports
+          </CardTitle>
+
+        </CardHeader>
+
+        <CardContent>
+
+          <div className="space-y-4">
+
+            {
+              reports.length === 0 && (
+
+                <p className="text-muted-foreground">
+                  Belum ada laporan
+                </p>
+
+              )
+            }
+
+            {
+              reports.map(
+                report => (
+
+                  <Link
+                    key={report.id}
+                    href={`/reports/${report.slug}`}
+                    className="
+                      block
+                      rounded-lg
+                      border
+                      p-4
+                      transition
+                      hover:bg-muted
+                    "
+                  >
+
+                    <div className="flex items-center justify-between">
+
+                      <div>
+
+                        <h3 className="font-medium">
+                          {report.title}
+                        </h3>
+
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(
+                            report.created_at
+                          ).toLocaleDateString(
+                            "id-ID"
+                          )}
+                        </p>
+
+                      </div>
+
+                      <span className="text-sm font-medium">
+                        {report.status}
+                      </span>
+
+                    </div>
+
+                  </Link>
+
+                )
+              )
+            }
+
+          </div>
+
+        </CardContent>
+
+      </Card>
+
+    </div>
+    </TransparanLayout>
+
+    
+
+  )
+}

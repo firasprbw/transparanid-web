@@ -16,7 +16,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { ChevronDownIcon, PlusIcon } from "lucide-react"
+import { ChevronDownIcon, CommandIcon, PlusIcon } from "lucide-react"
+import Link from "next/link"
 
 export function TeamSwitcher({
   teams,
@@ -34,19 +35,22 @@ export function TeamSwitcher({
   }
 
   return (
-    <SidebarMenu>
+    <Link href={"/"}>
+    <SidebarMenu className="cursor-pointer">
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="w-fit px-1.5">
-              <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                {activeTeam.logo}
-              </div>
-              <span className="truncate font-medium">{activeTeam.name}</span>
+              
+              <CommandIcon className="size-5!" />
+                <span className="text-base font-semibold">TransparanID</span>
+              
             </SidebarMenuButton>
           </DropdownMenuTrigger>
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
+    </Link>
+              
   )
 }

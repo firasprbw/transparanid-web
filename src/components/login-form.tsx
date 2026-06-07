@@ -20,6 +20,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { login } from "@/lib/api/auth"
+import { CommandIcon } from "lucide-react"
 
 
 
@@ -41,46 +42,42 @@ const [loading, setLoading] =
 const [error, setError] =
   useState("")
 
-  async function handleSubmit(
-  event: React.FormEvent
-) {
-
+  async function handleSubmit(event: React.FormEvent) {
   event.preventDefault()
-
   try {
-
     setLoading(true)
     setError("")
 
-    await login(
-      email,
-      password
-    )
+    const data = await login(email, password)
+    const role = data?.data?.user?.role
 
-    router.push("/")
+    if (role === "ADMIN") {
+      window.location.href = "/admin/dashboard"
+    } else if (role === "MODERATOR") {
+      window.location.href = "/moderator/dashboard"
+    } else {
+      window.location.href = "/"
+    }
 
   } catch (error) {
-
-    setError(
-      error instanceof Error
-        ? error.message
-        : "Login gagal"
-    )
-
+    setError(error instanceof Error ? error.message : "Login gagal")
   } finally {
-
     setLoading(false)
-
   }
 }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <div className="flex flex-col items-center gap-2">
+        <CommandIcon>
+        </CommandIcon>
+    <span className="text-2xl font-bold tracking-tight">TransparanID</span>
+  </div>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Login ke akun anda</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Masukkan email Anda di bawah ini untuk login ke akun Anda
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -106,7 +103,7 @@ const [error, setError] =
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
+                    Lupa password?
                   </a>
                 </div>
                 <Input
@@ -140,7 +137,7 @@ const [error, setError] =
                     : "Login"}
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/register">Sign up</a>
+                  Belum punya akun? <a href="/register">Daftar</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
