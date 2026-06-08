@@ -11,6 +11,7 @@ import {
 } from "@/lib/mappers/report.mapper"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Plus } from "lucide-react"
 
 export default async function HomePage() {
 
@@ -25,27 +26,20 @@ export default async function HomePage() {
   return (
     <div className="space-y-6">
 
-      <div className="flex items-start justify-between ">
-
+      <div className="flex items-start justify-between gap-4 p-6 rounded-xl border bg-background">
   <div>
-
-    {/* <h1 className="text-2xl font-bold">
-      Feed Laporan
-    </h1> */}
-    <p className="text-muted-foreground">
+    <h1 className="text-xl font-medium">Feed Laporan</h1>
+    <p className="text-sm text-muted-foreground mt-1">
       Laporan masyarakat yang telah dipublikasikan
     </p>
-
   </div>
 
-  <Button>
-
-    <Link href={"/reports/create"}>
-      + Buat Laporan
+  <Button asChild>
+    <Link href="/reports/create">
+      <Plus className="size-4" />
+      Buat Laporan
     </Link>
-
   </Button>
-
 </div>
 
       <ReportFeed

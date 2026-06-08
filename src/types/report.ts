@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 
 export interface Report {
+  report_category: any
   has_response: any
   impact: any
   reaction_count: ReactNode
